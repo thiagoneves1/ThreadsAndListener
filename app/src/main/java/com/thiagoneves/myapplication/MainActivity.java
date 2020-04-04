@@ -5,9 +5,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnEventListener<String> {
 
-    private OnEventListener callback;
     private TextView textView;
 
     @Override
@@ -16,19 +15,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
 
-        callback = new OnEventListener<String>() {
-            @Override
-            public void onSuccess(String result) {
-                textView.setText(result);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                textView.setText(e.getLocalizedMessage());
-            }
-        };
-
-        SomeTask someTask = new SomeTask(callback);
+        SomeTask someTask = new SomeTask(this);
         someTask.execute();
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        textView.setText(result);
+    }
+
+    @Override
+    public void onFailure(Exception e) {
+        textView.setText(e.getLocalizedMessage());
     }
 }
