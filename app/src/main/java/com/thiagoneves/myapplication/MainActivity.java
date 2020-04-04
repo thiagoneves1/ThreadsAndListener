@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
 import static com.thiagoneves.myapplication.ProcessThread.CODE_MESSAGE_FINISHED;
 import static com.thiagoneves.myapplication.ProcessThread.CODE_MESSAGE_RUNNING;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UDPListenerService {
 
     private TextView textView;
 
@@ -23,13 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
 
-        ProcessThread processThread = new ProcessThread(new IncomingHandler(new UDPListenerService() {
-            @Override
-            public void handleMessage(Message msg) {
-                updateUI(msg);
-            }
-        }));
+        ProcessThread processThread = new ProcessThread(new IncomingHandler(this));
         processThread.start();
+    }
+
+    @Override
+    public void handleMessage(Message message) {
+        updateUI(message);
     }
 
     static class IncomingHandler extends Handler {
