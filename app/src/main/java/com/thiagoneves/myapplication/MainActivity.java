@@ -1,11 +1,14 @@
 package com.thiagoneves.myapplication;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements OnEventListener<String> {
+public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
 
@@ -15,17 +18,19 @@ public class MainActivity extends AppCompatActivity implements OnEventListener<S
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
 
-        SomeTask someTask = new SomeTask(this);
-        someTask.execute();
-    }
-
-    @Override
-    public void onSuccess(String result) {
-        textView.setText(result);
-    }
-
-    @Override
-    public void onFailure(Exception e) {
-        textView.setText(e.getLocalizedMessage());
+        new Thread() { //this thread run in background
+            @Override
+            public void run() {
+                for (int i = 0; i <= 10; i++) {
+                    final int value = i;
+                    try {
+                        Thread.sleep(1000);
+                        Toast.makeText(MainActivity.this, "Error try show in main thread", Toast.LENGTH_LONG).show();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 }
