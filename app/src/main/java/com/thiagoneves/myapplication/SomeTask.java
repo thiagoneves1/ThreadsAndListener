@@ -11,7 +11,6 @@ public class SomeTask extends AsyncTask<Void, Void, String> {
     private WeakReference<OnEventListener<String>> mCallBack;
     private Exception mException;
 
-
     public SomeTask(OnEventListener callback) {
         mCallBack = new WeakReference<OnEventListener<String>>(callback);
     }
@@ -21,10 +20,10 @@ public class SomeTask extends AsyncTask<Void, Void, String> {
 
         try {
             Random rand = new Random();
-
             int randomNum = rand.nextInt(100);
+
             Thread.sleep(1000);
-                return "HELLO Random number is " + randomNum;
+                return "Hello!. Random number is " + randomNum;
 
         } catch (Exception e) {
             mException = e;
